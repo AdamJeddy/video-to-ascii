@@ -1,75 +1,62 @@
-import os
 import cv2
-from PIL import Image
-import ascii_magic
+import os
 import time
 
-def video_to_ascii(video_path, target_fps=30, target_width=100):
+# ASCII characters from dark to light
+# ASCII_CHARS = "@%#*+=-:. "
+# ASCII_CHARS = " .:-=+*#%@"
+ASCII_CHARS = "   -=+*#%@"
+
+
+def frame_to_ascii(frame, new_width=100):
+    # Convert to grayscale
+    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+
+    # Resize frame to fit terminal
+    height, width = gray.shape
+    aspect_ratio = height / width
+    new_height = int(aspect_ratio * new_width * 0.43)
+    resized_gray = cv2.resize(gray, (new_width, new_height))
+
+    # chars = ASCII_CHARS[::-1] if not invert else ASCII_CHARS
+
+    # Convert pixels to ASCII
+    ascii_frame = ""
+    for row in resized_gray:
+        line = "".join(
+            ASCII_CHARS[int(pixel) * len(ASCII_CHARS) // 256]
+              for pixel in row
+        )
+        ascii_frame += line + "\n"
+
+    return ascii_frame
+
+def play_video_ascii(video_path, width=100, fps=30):
     cap = cv2.VideoCapture(video_path)
 
     if not cap.isOpened():
         print("Error: Could not open video.")
         return
-    
-    original_fps = cap.get(cv2.CAP_PROP_FPS)
-    if original_fps == 0:
-        original_fps = 30  # Default to 30 if unable to get FPS
 
-    # calculate delay between frames for wanted fps
-    frame_delay = 1.0 / target_fps
+    delay = 1 / fps
 
-    # Clear terminal
+    try:
+        while True:
+            ret, frame = cap.read()
+            if not ret:
+                break
 
-    def clear_terminal():
-        os.system('cls' if os.name == 'nt' else 'clear')
-    
-    while True:
-        ret, frame = cap.read()
+            ascii_frame = frame_to_ascii(frame, new_width=width)
 
-        if not ret:
-            break
+            os.system("cls" if os.name == "nt" else "clear")  # clear terminal
+            print(ascii_frame)
 
-        # convert frame to grreyscale
-        grey_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGBA)
-
-        # convert OpenCV image to PIL image
-        pil_image = Image.fromarray(grey_frame)
-
-        # calculate new height to maintain aspect ratio
-        width, height = pil_image.size
-        aspect_ratio = height / width
-
-        # aspect ratio correction for terminal characters
-        new_height = int(target_width * aspect_ratio * 0.55)
-
-        # resize image
-        pil_image = pil_image.resize((target_width, new_height))
-
-        # convert to ASCII
-        ascii_art_obj = ascii_magic.from_pillow_image(pil_image)
-
-        # render to terminal
-
-        # ascii_frame = ascii_art_obj.to_terminal(monochrome=True, back=ascii_magic.Back.BLACK)
-        ascii_frame = ascii_art_obj.to_terminal()
-        clear_terminal() 
-        print(ascii_frame)
-
-        time.sleep(frame_delay)
-
-    cap.release()
-
-    print("Video processing complete.")
-
+            time.sleep(delay)
+    except KeyboardInterrupt:
+        print("\nStopped.")
+    finally:
+        cap.release()
 
 if __name__ == "__main__":
-
-    video_file = "input_video_1.mp4"
-    target_width = 1920
-    target_fps = 60
-
-    # Check if the video file exists
-    if not os.path.isfile(video_file):
-        raise FileNotFoundError(f"Video file '{video_file}' not found.")
-    else:
-        video_to_ascii(video_file, target_fps, target_width)
+    # Change "video.mp4" to your file
+    play_video_ascii("input_video_2.mp4", width=100, fps=60)

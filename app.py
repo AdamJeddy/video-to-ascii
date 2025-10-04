@@ -4,7 +4,7 @@ from PIL import Image
 import ascii_magic
 import time
 
-def video_to_ascii(video_path, target_fps=30, target_width=640):
+def video_to_ascii(video_path, target_fps=30, target_width=100):
     cap = cv2.VideoCapture(video_path)
 
     if not cap.isOpened():
@@ -13,8 +13,8 @@ def video_to_ascii(video_path, target_fps=30, target_width=640):
     
     original_fps = cap.get(cv2.CAP_PROP_FPS)
     if original_fps == 0:
-        orginal_fps = 30  # Default to 30 if unable to get FPS
-    
+        original_fps = 30  # Default to 30 if unable to get FPS
+
     # calculate delay between frames for wanted fps
     frame_delay = 1.0 / target_fps
 
@@ -52,7 +52,7 @@ def video_to_ascii(video_path, target_fps=30, target_width=640):
 
         # ascii_frame = ascii_art_obj.to_terminal(monochrome=True, back=ascii_magic.Back.BLACK)
         ascii_frame = ascii_art_obj.to_terminal()
-        clear_terminal()
+        clear_terminal() 
         print(ascii_frame)
 
         time.sleep(frame_delay)
@@ -64,7 +64,7 @@ def video_to_ascii(video_path, target_fps=30, target_width=640):
 
 if __name__ == "__main__":
 
-    video_file = "input_video_2.mp4"
+    video_file = "input_video_1.mp4"
     target_width = 1920
     target_fps = 60
 

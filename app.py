@@ -1,6 +1,7 @@
 import cv2
 import os
 import time
+import sys
 
 # ASCII characters from dark to light
 # ASCII_CHARS = "@%#*+=-:. " 
@@ -38,7 +39,7 @@ def play_video_ascii(video_path, width=100, fps=60):
         print("Error: Could not open video.")
         return
 
-    fps = cap.get(cv2.CAP_PROP_FPS)
+    # fps = cap.get(cv2.CAP_PROP_FPS)
     delay = 1 / fps
 
     try:
@@ -50,7 +51,10 @@ def play_video_ascii(video_path, width=100, fps=60):
             ascii_frame = frame_to_ascii(frame, new_width=width)
 
             os.system("cls" if os.name == "nt" else "clear")  # clear terminal
-            print(ascii_frame)
+
+            # print(ascii_frame)
+            sys.stdout.write(ascii_frame)
+            sys.stdout.flush()
 
             time.sleep(delay)
     except KeyboardInterrupt:
@@ -59,5 +63,5 @@ def play_video_ascii(video_path, width=100, fps=60):
         cap.release()
 
 if __name__ == "__main__":
-    
+
     play_video_ascii("input_video_3.mp4", width=100)

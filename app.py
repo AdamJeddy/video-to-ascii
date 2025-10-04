@@ -3,14 +3,14 @@ import os
 import time
 
 # ASCII characters from dark to light
-# ASCII_CHARS = "@%#*+=-:. "
-# ASCII_CHARS = " .:-=+*#%@"
-ASCII_CHARS = "   -=+*#%@"
+# ASCII_CHARS = "@%#*+=-:. " 
+ASCII_CHARS = " .:-=+*#%@"
+# ASCII_CHARS = "   -=+*#%@"
 
 
 def frame_to_ascii(frame, new_width=100):
     # Convert to grayscale
-    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)  
 
     # Resize frame to fit terminal
     height, width = gray.shape
@@ -31,13 +31,14 @@ def frame_to_ascii(frame, new_width=100):
 
     return ascii_frame
 
-def play_video_ascii(video_path, width=100, fps=30):
+def play_video_ascii(video_path, width=100, fps=60):
     cap = cv2.VideoCapture(video_path)
 
     if not cap.isOpened():
         print("Error: Could not open video.")
         return
 
+    fps = cap.get(cv2.CAP_PROP_FPS)
     delay = 1 / fps
 
     try:
@@ -58,5 +59,5 @@ def play_video_ascii(video_path, width=100, fps=30):
         cap.release()
 
 if __name__ == "__main__":
-    # Change "video.mp4" to your file
-    play_video_ascii("input_video_2.mp4", width=100, fps=60)
+    
+    play_video_ascii("input_video_3.mp4", width=100)

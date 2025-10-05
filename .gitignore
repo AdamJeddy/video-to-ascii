@@ -1,2 +1,17 @@
-.venv/
+# Byte-compiled files
+__pycache__/
 
+# Distribution / packaging
+.Python
+env/
+build/
+dist/
+
+# Installer logs
+debug.log
+
+# Virtual environments
+venv/
+
+# Video files
+*.mp4

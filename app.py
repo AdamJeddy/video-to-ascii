@@ -4,10 +4,6 @@ This small script converts video frames to ASCII art and prints them
 to the terminal at a target framerate.
 """
 
-# Some OpenCV members are dynamically defined which confuses pylint's
-# static analysis; disable the false-positive no-member errors for cv2.
-# pylint: disable=no-member
-
 import os
 import time
 import sys

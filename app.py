@@ -1,13 +1,35 @@
-import cv2
+"""Play a video as ASCII art in the terminal.
+
+This small script converts video frames to ASCII art and prints them
+to the terminal at a target framerate.
+"""
+
+# Some OpenCV members are dynamically defined which confuses pylint's
+# static analysis; disable the false-positive no-member errors for cv2.
+# pylint: disable=no-member
+
 import os
 import time
 import sys
+
+import cv2  # type: ignore
+
 
 # ASCII characters from dark to light
 ASCII_CHARS = " .:-=+*#%@"  # "   -=+*#%@"
 
 
 def frame_to_ascii(frame, new_width=100):
+    """Convert a BGR image frame to an ASCII art string.
+
+    Args:
+        frame: BGR image as a NumPy array (H, W, 3).
+        new_width: Target width in characters for the output.
+
+    Returns:
+        A string with the ASCII art representation of the frame.
+    """
+
     # Convert to grayscale
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
@@ -30,6 +52,13 @@ def frame_to_ascii(frame, new_width=100):
 
 
 def play_video_ascii(video_path, width=100, fps=60):
+    """Play the given video file as ASCII art in the terminal.
+
+    Args:
+        video_path: Path to the video file to play.
+        width: Width in characters for the ASCII rendering.
+        fps: Frames per second to attempt to render.
+    """
     cap = cv2.VideoCapture(video_path)
 
     if not cap.isOpened():

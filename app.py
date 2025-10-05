@@ -7,7 +7,6 @@ import sys
 ASCII_CHARS = " .:-=+*#%@"  # "   -=+*#%@"
 
 
-
 def frame_to_ascii(frame, new_width=100):
     # Convert to grayscale
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
@@ -28,7 +27,6 @@ def frame_to_ascii(frame, new_width=100):
         ascii_frame += line + "\n"
 
     return ascii_frame
-
 
 
 def play_video_ascii(video_path, width=100, fps=60):

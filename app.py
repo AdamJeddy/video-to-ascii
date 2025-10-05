@@ -4,12 +4,13 @@ import time
 import sys
 
 # ASCII characters from dark to light
-ASCII_CHARS = " .:-=+*#%@" # "   -=+*#%@"
+ASCII_CHARS = " .:-=+*#%@"  # "   -=+*#%@"
+
 
 
 def frame_to_ascii(frame, new_width=100):
     # Convert to grayscale
-    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)  
+    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
     # Resize frame to fit terminal
     height, width = gray.shape
@@ -17,18 +18,18 @@ def frame_to_ascii(frame, new_width=100):
     new_height = int(aspect_ratio * new_width * 0.43)
     resized_gray = cv2.resize(gray, (new_width, new_height))
 
-    # chars = ASCII_CHARS[::-1] if not invert else ASCII_CHARS
-
     # Convert pixels to ASCII
     ascii_frame = ""
     for row in resized_gray:
         line = "".join(
             ASCII_CHARS[int(pixel) * len(ASCII_CHARS) // 256]
-              for pixel in row
+            for pixel in row
         )
         ascii_frame += line + "\n"
 
     return ascii_frame
+
+
 
 def play_video_ascii(video_path, width=100, fps=60):
     cap = cv2.VideoCapture(video_path)
@@ -36,7 +37,7 @@ def play_video_ascii(video_path, width=100, fps=60):
     if not cap.isOpened():
         print("Error: Could not open video.")
         return
-    
+
     delay = 1 / fps
 
     try:
@@ -49,7 +50,6 @@ def play_video_ascii(video_path, width=100, fps=60):
 
             os.system("cls" if os.name == "nt" else "clear")  # clear terminal
 
-            # print(ascii_frame)
             sys.stdout.write(ascii_frame)
             sys.stdout.flush()
 
@@ -59,6 +59,6 @@ def play_video_ascii(video_path, width=100, fps=60):
     finally:
         cap.release()
 
-if __name__ == "__main__":
 
+if __name__ == "__main__":
     play_video_ascii("input_video_1.mp4", width=100)

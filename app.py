@@ -4,9 +4,7 @@ import time
 import sys
 
 # ASCII characters from dark to light
-# ASCII_CHARS = "@%#*+=-:. " 
-ASCII_CHARS = " .:-=+*#%@"
-# ASCII_CHARS = "   -=+*#%@"
+ASCII_CHARS = " .:-=+*#%@" # "   -=+*#%@"
 
 
 def frame_to_ascii(frame, new_width=100):
@@ -38,8 +36,7 @@ def play_video_ascii(video_path, width=100, fps=60):
     if not cap.isOpened():
         print("Error: Could not open video.")
         return
-
-    # fps = cap.get(cv2.CAP_PROP_FPS)
+    
     delay = 1 / fps
 
     try:
@@ -64,4 +61,4 @@ def play_video_ascii(video_path, width=100, fps=60):
 
 if __name__ == "__main__":
 
-    play_video_ascii("input_video_3.mp4", width=100)
+    play_video_ascii("input_video_1.mp4", width=100)
